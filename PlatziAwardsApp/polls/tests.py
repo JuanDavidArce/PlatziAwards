@@ -4,7 +4,7 @@ from django.urls import reverse
 import datetime
 
 
-# Djago
+# Django
 from django.test import TestCase
 from django.utils import timezone
 
@@ -76,3 +76,27 @@ class QuestionIndexViewTests(TestCase):
         question=create_question("Past question",days=-10)
         response = self.client.get(reverse("polls:index"))
         self.assertQuerysetEqual(response.context["latest_question_list"],[question])
+
+
+    def test_future_question_and_past_question(self):
+        """
+        Even if bith past and future question exist, only past question are displayed
+
+        """
+        past_question = create_question(question_text="Past question",days=-30)
+        future_question = create_question(question_text="Future question",days=30)
+        response = self.client.get(reverse("polls:index"))
+        self.assertQuerysetEqual(
+            response.context["latest_question_list"],
+            [past_question]
+        )
+
+    def test_two_past_questions(self):
+        """The questions index page may display miltiple questions"""
+        past_question1 = create_question(question_text="Past question 1",days=-30)
+        past_question2 = create_question(question_text="Past question 2",days=-40)
+        response = self.client.get(reverse("polls:index"))
+        self.assertQuerysetEqual(
+            response.context["latest_question_list"],
+            [past_question1,past_question2]
+        )
