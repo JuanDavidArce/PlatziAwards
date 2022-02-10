@@ -10,25 +10,6 @@ from .models import Choice, Question
 
 
 
-# def index(request):
-#     latest_question_list = Question.objects.all()
-#     return render(request,"polls/index.html",context={
-#         "latest_question_list":latest_question_list
-#     })
-
-
-# def detail(request,question_id):
-#     question =get_object_or_404(Question,pk=question_id)
-#     return render(request,"polls/detail.html",context={
-#         "question":question
-#     })
-
-# def results(request,question_id):
-#     question = get_object_or_404(Question,pk=question_id)
-#     return render(request,"polls/results.html",context={
-#         "question":question
-#     })
-
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
